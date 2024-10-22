@@ -3,10 +3,8 @@ package com.microservice.controller;
 import com.microservice.model.Person;
 import com.microservice.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +19,22 @@ public class PersonController {
     public List<Person> getAllPerson(){
         return personService.getAllPerson();
     }
+
     @PostMapping("/add")
-    public Person createPerson(Person person){
+    public Person savePerson(@RequestBody Person person){
         return personService.createPerson(person);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable Long id){
+        personService.deleteById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable Long id,@RequestBody Person person){
+        return  ResponseEntity.ok( personService.update(id, person));
+
+    }
+
+
 }
